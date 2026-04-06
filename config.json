@@ -1,0 +1,57 @@
+{
+  "hand_detector": {
+    "hsv": {
+      "min_h": 0,
+      "max_h": 25,
+      "min_s": 48,
+      "max_s": 180,
+      "min_v": 60,
+      "max_v": 255
+    },
+    "roi": {
+      "enabled": true,
+      "y_start_fraction": 0.25,
+      "y_end_fraction": 1.0,
+      "x_start_fraction": 0.0,
+      "x_end_fraction": 1.0
+    },
+    "contour_filter": {
+      "min_area": 5000,
+      "max_area": 180000
+    },
+    "shape_filter": {
+      "min_aspect_ratio": 0.4,
+      "max_aspect_ratio": 2.2,
+      "max_solidity": 0.97
+    },
+    "morphology": {
+      "kernel_size": 5,
+      "iterations": 1
+    },
+    "blur": {
+      "pre_hsv_kernel": 7,
+      "post_mask_kernel": 5
+    }
+  },
+  "calibration": {
+    "box_size": 80,
+    "position": "bottom_right",
+    "offset_from_edge": 40,
+    "h_tolerance": 18,
+    "s_tolerance_down": 45,
+    "s_tolerance_up": 80,
+    "v_tolerance_down": 60,
+    "v_tolerance_up": 110,
+    "min_s_floor": 48,
+    "min_v_floor": 60
+  },
+  "gesture_recognizer": {
+    "min_contour_area": 5000,
+    "min_defect_depth": 25,
+    "max_finger_angle_deg": 80
+  },
+  "word_builder": {
+    "stable_threshold_frames": 25,
+    "re_trigger_delay_frames": 15
+  }
+}

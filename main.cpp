@@ -2,23 +2,32 @@
 #include <vector>
 #include <string>
 #include <opencv2/opencv.hpp>
+#include "AppConfig.h"
 #include "HandDetector.h"
 #include "GestureRecognizer.h"
 #include "WordBuilder.h"
+#include "TTSEngine.h"
 
 using namespace cv;
 using namespace std;
 
 int main() {
+    AppConfig appCfg;
+    bool configLoaded = loadConfig("config.json", appCfg);
+
     VideoCapture cap(0);
     if (!cap.isOpened()) {
         cerr << "Error: Could not open webcam" << endl;
         return -1;
     }
 
-    HandDetector detector;
-    GestureRecognizer recognizer;
+    HandDetector detector(appCfg.detector);
+    GestureRecognizer recognizer(appCfg.recognizer);
     WordBuilder wordBuilder;
+    wordBuilder.configure(appCfg.wordBuilder.stable_threshold_frames, appCfg.wordBuilder.re_trigger_delay_frames);
+    TTSEngine tts;
+    tts.configure(appCfg.tts.enabled, appCfg.tts.primary, appCfg.tts.fallback);
+    tts.start();
 
     namedWindow("Sign Language Recognition", WINDOW_NORMAL);
     resizeWindow("Sign Language Recognition", 1280, 720);
@@ -27,16 +36,18 @@ int main() {
     bool calibrated = false;
     int calibration_countdown = 150; 
 
-    cout << "Press 'c' to re-calibrate, 's' for space, 'x' for backspace, 'q' to quit." << endl;
+    cout << "Press 'c' recalibrate, 's' space, 'x' backspace, 'r' reset, 'p' speak, 'q' quit." << endl;
+    if (!configLoaded) {
+        cout << "Warning: config.json was not loaded, using defaults." << endl;
+    }
 
     while (true) {
         cap >> frame;
         if (frame.empty()) break;
 
         if (!calibrated) {
-            // FIX: Match HandDetector::calibrate — bottom-right corner, away from face
-            int box_size = 80;
-            int offset   = 40;
+            int box_size = appCfg.detector.calibration_box_size;
+            int offset = appCfg.detector.calibration_offset;
             Rect roi(
                 frame.cols - box_size - offset,
                 frame.rows - box_size - offset,
@@ -58,7 +69,10 @@ int main() {
         } else {
             vector<Point> hand = detector.detect(frame);
             string letter = recognizer.recognize(hand);
-            wordBuilder.process(letter);
+            string committed = wordBuilder.process(letter);
+            if (committed == "__SPEAK__") {
+                tts.speakAsync(wordBuilder.getSentence());
+            }
 
             if (!hand.empty()) {
                 vector<vector<Point>> contours = {hand};
@@ -69,15 +83,29 @@ int main() {
 
             // UI Elements
             putText(frame, "Stabilizing: " + letter, Point(30, 60), FONT_HERSHEY_SIMPLEX, 1.2, Scalar(0, 0, 255), 2);
+            string conf = "Confidence: " + to_string(static_cast<int>(recognizer.getLastConfidence() * 100.0)) + "%";
+            putText(frame, conf, Point(30, 95), FONT_HERSHEY_SIMPLEX, 0.8, Scalar(255, 255, 0), 2);
             
             float progress = wordBuilder.getProgress();
             if (progress > 0) {
-                rectangle(frame, Point(30, 80), Point(30 + (int)(250 * progress), 95), Scalar(0, 255, 0), FILLED);
-                rectangle(frame, Point(30, 80), Point(280, 95), Scalar(255, 255, 255), 1);
+                rectangle(frame, Point(30, 110), Point(30 + (int)(250 * progress), 125), Scalar(0, 255, 0), FILLED);
+                rectangle(frame, Point(30, 110), Point(280, 125), Scalar(255, 255, 255), 1);
             }
 
             string sentence = "Sentence: " + wordBuilder.getSentence();
             putText(frame, sentence, Point(30, 450), FONT_HERSHEY_SIMPLEX, 1.2, Scalar(0, 255, 0), 2);
+
+            string ttsStatus = "TTS: ";
+            if (!tts.isAvailable()) {
+                ttsStatus += "Unavailable";
+            } else if (tts.hasError()) {
+                ttsStatus += "Error";
+            } else if (tts.isSpeaking()) {
+                ttsStatus += "Speaking";
+            } else {
+                ttsStatus += "Idle";
+            }
+            putText(frame, ttsStatus, Point(30, 485), FONT_HERSHEY_SIMPLEX, 0.8, Scalar(200, 255, 200), 2);
             
             imshow("Skin Mask", detector.mask);
             imshow("Motion Mask", detector.fgMask);
@@ -88,10 +116,13 @@ int main() {
         char key = (char)waitKey(1);
         if (key == 'q') break;
         if (key == 'c') { calibrated = false; calibration_countdown = 150; }
-        if (key == 's') wordBuilder.process("Space");
-        if (key == 'x') wordBuilder.process("Backspace");
+        if (key == 's') (void)wordBuilder.process("Space");
+        if (key == 'x') (void)wordBuilder.process("Backspace");
+        if (key == 'r') wordBuilder.clearSentence();
+        if (key == 'p' || key == 13) tts.speakAsync(wordBuilder.getSentence());
     }
 
+    tts.stop();
     cap.release();
     destroyAllWindows();
     return 0;

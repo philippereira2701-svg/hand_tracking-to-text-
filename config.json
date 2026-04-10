@@ -9,14 +9,14 @@
       "max_v": 255
     },
     "roi": {
-      "enabled": true,
+      "enabled": false,
       "y_start_fraction": 0.25,
       "y_end_fraction": 1.0,
       "x_start_fraction": 0.0,
       "x_end_fraction": 1.0
     },
     "contour_filter": {
-      "min_area": 5000,
+      "min_area": 3500,
       "max_area": 180000
     },
     "shape_filter": {
@@ -31,27 +31,37 @@
     "blur": {
       "pre_hsv_kernel": 7,
       "post_mask_kernel": 5
+    },
+    "motion_filter": {
+      "min_motion_factor": 0.012,
+      "track_motion_factor": 0.004
     }
   },
   "calibration": {
-    "box_size": 80,
+    "box_size": 140,
     "position": "bottom_right",
     "offset_from_edge": 40,
-    "h_tolerance": 18,
-    "s_tolerance_down": 45,
-    "s_tolerance_up": 80,
-    "v_tolerance_down": 60,
-    "v_tolerance_up": 110,
-    "min_s_floor": 48,
-    "min_v_floor": 60
+    "h_tolerance": 25,
+    "s_tolerance_down": 65,
+    "s_tolerance_up": 90,
+    "v_tolerance_down": 80,
+    "v_tolerance_up": 120,
+    "min_s_floor": 10,
+    "min_v_floor": 20
   },
   "gesture_recognizer": {
-    "min_contour_area": 5000,
+    "min_contour_area": 3500,
     "min_defect_depth": 25,
-    "max_finger_angle_deg": 80
+    "max_finger_angle_deg": 85,
+    "min_rule_confidence": 0.68
   },
   "word_builder": {
     "stable_threshold_frames": 25,
     "re_trigger_delay_frames": 15
+  },
+  "tts": {
+    "enabled": true,
+    "primary": "spd-say",
+    "fallback": "espeak-ng"
   }
 }

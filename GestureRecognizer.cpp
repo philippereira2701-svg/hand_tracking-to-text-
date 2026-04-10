@@ -1,99 +1,105 @@
 #include "GestureRecognizer.h"
-#include <cmath>
+
 #include <algorithm>
 
 using namespace cv;
 using namespace std;
 
-string GestureRecognizer::recognize(vector<Point> cnt) {
-    if (cnt.empty()) return "None";
-    
-    double area = contourArea(cnt);
-    if (area < 3500) return "None";
+GestureRecognizer::GestureRecognizer() : cfg(RecognizerConfig{}) {}
 
-    // Basic geometric features
-    Rect bbox = boundingRect(cnt);
-    double aspect_ratio = (double)bbox.width / bbox.height;
-    
-    vector<Point> hull;
-    convexHull(cnt, hull);
-    double hull_area = contourArea(hull);
-    
-    // BUG FIX 1: Prevent division by zero if hull_area is 0
-    double solidity = (hull_area > 0.001) ? area / hull_area : 0;
-    double extent = area / (double)(bbox.width * bbox.height);
+GestureRecognizer::GestureRecognizer(const RecognizerConfig& config) : cfg(config) {}
 
-    // Convexity defects for finger counting
-    vector<int> hull_indices;
-    // We MUST use indices for convexityDefects to work correctly with the contour
-    convexHull(cnt, hull_indices, false);
-    
-    // BUG FIX 2: convexityDefects REQUIRES hull_indices to be in clockwise or counter-clockwise order
-    // as they appear on the contour. sort() might break this ordering depending on implementation.
-    // However, OpenCV's convexHull already returns them in order. Let's ensure they are valid.
-    
-    vector<Vec4i> defects;
-    int fingers = 0;
+void GestureRecognizer::applyConfig(const RecognizerConfig& config) {
+    cfg = config;
+}
 
-    if (hull_indices.size() > 3) {
-        try {
-            convexityDefects(cnt, hull_indices, defects);
-            for (const auto& defect : defects) {
-                Point start = cnt[defect[0]];
-                Point end = cnt[defect[1]];
-                Point far = cnt[defect[2]];
-                double depth = defect[3] / 256.0;
+double GestureRecognizer::getLastConfidence() const {
+    return lastConfidence;
+}
 
-                // BUG FIX 3: Refined depth and angle filters for better finger isolation
-                if (depth > 20) { 
-                    double a = norm(end - start);
-                    double b = norm(far - start);
-                    double c = norm(end - far);
-                    
-                    // Cosine rule to find the angle at the defect point (between fingers)
-                    double cos_theta = (b * b + c * c - a * a) / (2 * b * c);
-                    
-                    // Clamp for safety
-                    if (cos_theta < -1.0) cos_theta = -1.0;
-                    if (cos_theta > 1.0) cos_theta = 1.0;
-                    
-                    double angle = acos(cos_theta) * 57.29;
-                    if (angle <= 90) fingers++;
-                }
-            }
-        } catch (...) {
-            // Silently fail if defects can't be computed for complex shapes
+GestureFeatures GestureRecognizer::getLastFeatures() const {
+    return lastFeatures;
+}
+
+string GestureRecognizer::classifyFeatures(const GestureFeatures& f) {
+    if (!f.valid || f.area < cfg.min_contour_area) {
+        return "None";
+    }
+
+    vector<RuleScore> rules;
+
+    const int fingers = f.finger_count;
+    const double ar = f.aspect_ratio;
+    const double solidity = f.solidity;
+    const double extent = f.extent;
+    const double avgDepth = f.avg_defect_depth;
+    const int defects = f.defect_count;
+
+    if (fingers <= 1) {
+        if (ar > 1.2) {
+            rules.push_back({"C", 0.95}); // Curve
+        } else if (ar < 0.65) {
+            rules.push_back({"I", 0.95}); // Index up
+        } else if (solidity < 0.78) {
+            rules.push_back({"O", 0.95}); // O-shape (Circle)
+        } else {
+            rules.push_back({"A", 0.95}); // Fist
+        }
+    }
+    else if (fingers == 2) {
+        if (ar < 0.55) {
+            rules.push_back({"S", 0.95}); // U-sign -> S
+        } else if (ar > 1.25) {
+            rules.push_back({"H", 0.95}); // Two fingers sideways -> H
+        } else if (solidity < 0.75) {
+            rules.push_back({"L", 0.95}); // L-sign -> L
+        } else {
+            rules.push_back({"N", 0.95}); // V-sign -> N
+        }
+    }
+    else if (fingers == 3) {
+        rules.push_back({"T", 0.95}); // W-shape -> T
+    }
+    else if (fingers >= 4) {
+        if (ar > 1.2) {
+            rules.push_back({"Space", 0.95}); // Horizontal open palm -> Space
+        } else {
+            rules.push_back({"E", 0.95}); // Open palm -> E
         }
     }
 
-    // --- REFINED SIGN LOGIC (Based on common ASL shapes) ---
-    // Note: fingers 1-4 are usually the gaps between 2-5 fingers.
-    // 0 defects = 1 finger or 0 fingers (fist)
-    // 1 defect  = 2 fingers (gap between them)
-    // 4 defects = 5 fingers (gaps between all 5)
+    // Keep space as explicit keyboard control for conservative mode.
 
-    if (fingers == 0) {
-        if (solidity > 0.90) return "A"; // Solid fist
-        if (aspect_ratio > 1.4) return "C"; // Curved/wide
-        if (extent < 0.5) return "S"; // Compact fist
-        return "None";
-    } 
-    else if (fingers == 1) {
-        if (aspect_ratio > 0.8) return "L"; // Thumb + Index
-        if (aspect_ratio < 0.6) return "D"; // Index pointing up
-        return "G";
-    } 
-    else if (fingers == 2) {
-        if (aspect_ratio < 0.7) return "V"; // Victory
-        return "H";
-    } 
-    else if (fingers == 3) {
-        return "W";
-    } 
-    else if (fingers == 4) {
-        if (solidity > 0.8) return "B"; // Flat palm (high solidity)
-        return "Open"; // Spread hand
+    if (rules.empty()) {
+        return "Unknown";
     }
 
-    return "Unknown";
+    auto best = max_element(rules.begin(), rules.end(), [](const RuleScore& a, const RuleScore& b) {
+        return a.score < b.score;
+    });
+    lastConfidence = best->score;
+    double secondBest = 0.0;
+    for (const auto& r : rules) {
+        if (r.label != best->label) {
+            secondBest = max(secondBest, r.score);
+        }
+    }
+    const double conservativeMargin = 0.06;
+    if (best->score < cfg.min_rule_confidence || (best->score - secondBest) < conservativeMargin) {
+        return "None";
+    }
+    return best->label;
+}
+
+string GestureRecognizer::recognize(const vector<Point>& cnt) {
+    lastConfidence = 0.0;
+    if (cnt.empty()) return "None";
+
+    lastFeatures = extractor.extract(cnt, cfg.min_defect_depth, cfg.max_finger_angle_deg);
+    return classifyFeatures(lastFeatures);
+}
+
+string GestureRecognizer::recognizeFromFeaturesForTest(const GestureFeatures& features) {
+    lastFeatures = features;
+    return classifyFeatures(lastFeatures);
 }

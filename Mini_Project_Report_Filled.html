@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Mini_Project_Report_Filled</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<h1 id="mini-project-report">Mini Project Report</h1>
+<h2 id="title-of-the-mini-project">Title of the Mini Project</h2>
+<p><strong>Hand Sign to Sentence Conversion using C++ and
+OpenCV</strong></p>
+<h3 id="submitted-by">Submitted by</h3>
+<ul>
+<li>Student Name 1 (PRN: __________)</li>
+<li>Student Name 2 (PRN: __________)</li>
+<li>Student Name 3 (PRN: __________)</li>
+</ul>
+<p>SY CSE (Panel A)<br />
+Course: Object Oriented Programming in C++<br />
+Course Code: CSE1003B</p>
+<p>Under the Internal Guidance of<br />
+Prof./Dr. ____________________</p>
+<p>Department of Computer Engineering and Technology<br />
+MIT World Peace University, Kothrud, Pune 411038, Maharashtra,
+India<br />
+Academic Year: 2025-2026</p>
+<hr />
+<h2 id="certificate">Certificate</h2>
+<p>This is to certify that Student Name 1, Student Name 2, and Student
+Name 3 of SY-BTech (Computer Science and Engineering) have completed
+their mini project titled <strong>“Hand Sign to Sentence Conversion
+using C++ and OpenCV”</strong> and have submitted this Object Oriented
+Programming in C++ report for the academic year 2025-26 (Sem-IV).</p>
+<p>Mini Project Guide: Prof./Dr. ____________________<br />
+Department of CET, MIT World Peace University, Pune</p>
+<hr />
+<h2 id="abstract">Abstract</h2>
+<p>This mini project presents a real-time hand sign recognition system
+that converts recognized hand gestures into sentence text and speaks the
+sentence through text-to-speech (TTS). The application is implemented in
+C++ using OpenCV and follows a rule-based recognition pipeline suitable
+for Object Oriented Programming concepts.</p>
+<p>The system captures live webcam input, performs skin-color
+segmentation with calibration, removes face regions, applies motion and
+contour-based filtering, extracts geometric hand features, and maps them
+to gesture labels using configurable recognition rules. A stabilization
+module commits letters only after frame-level consistency, reducing
+repeated or noisy outputs. The generated sentence can be spoken
+asynchronously through Linux TTS tools (<code>spd-say</code> with
+<code>espeak-ng</code> fallback).</p>
+<p>The project emphasizes modular OOP design through dedicated classes
+for configuration loading, detection, feature extraction, recognition,
+sentence building, and speech. It supports runtime tuning through
+<code>config.json</code> and includes rule-level test cases for
+recognizer validation. The implementation demonstrates practical
+computer vision with robust software structuring.</p>
+<hr />
+<h2 id="list-of-figures-and-tables">List of Figures and Tables</h2>
+<ul>
+<li><strong>Figure 1:</strong> High-level architecture of the
+system<br />
+</li>
+<li><strong>Figure 2:</strong> Class relationship diagram<br />
+</li>
+<li><strong>Table 1:</strong> Gesture mapping rules<br />
+</li>
+<li><strong>Table 2:</strong> Test cases and observed outputs</li>
+</ul>
+<hr />
+<h2 id="contents">Contents</h2>
+<ol type="1">
+<li>Introduction<br />
+</li>
+<li>Problem Statement<br />
+</li>
+<li>Objectives<br />
+</li>
+<li>List of Classes and Class Diagram<br />
+</li>
+<li>Description of OOP Concepts Used<br />
+</li>
+<li>Implementation Details and Code<br />
+</li>
+<li>Test Cases and Results<br />
+</li>
+<li>Individual Contributions<br />
+</li>
+<li>Conclusion and Future Scope</li>
+</ol>
+<hr />
+<h2 id="chapter-1-introduction">Chapter 1: Introduction</h2>
+<p>Communication barriers faced by speech-impaired individuals can be
+reduced by systems that automatically convert sign gestures into
+machine-readable and audible forms. This project implements a
+webcam-based sign recognition tool that identifies hand postures and
+constructs text sentences in real time.</p>
+<p>Unlike deep-learning-heavy systems that need large datasets and
+training infrastructure, this solution uses a compact rule-based method
+with geometric and contour features. The approach is suitable for an OOP
+mini project because it provides understandable logic, modular class
+design, configurable behavior, and testability.</p>
+<p>The final application offers: - real-time gesture recognition, -
+stable sentence formation, - keyboard-assisted editing controls, -
+asynchronous text-to-speech output, - configurable thresholds for
+different environments.</p>
+<hr />
+<h2 id="chapter-2-problem-statement">Chapter 2: Problem Statement</h2>
+<p>Design and implement a real-time C++ application that: - captures
+live hand gestures through a webcam, - recognizes predefined sign
+patterns reliably under normal indoor lighting, - converts recognized
+signs into sentence text with noise control, - provides speech output
+from the generated sentence, - follows Object Oriented Programming
+principles and modular architecture.</p>
+<hr />
+<h2 id="chapter-3-objectives">Chapter 3: Objectives</h2>
+<ul>
+<li>Build a complete real-time sign interpretation pipeline in C++ and
+OpenCV.</li>
+<li>Apply robust hand detection using skin segmentation, face masking,
+and motion filtering.</li>
+<li>Extract gesture features (area, aspect ratio, solidity, convexity
+defects, finger count).</li>
+<li>Recognize signs using rule-based classification with confidence
+thresholding.</li>
+<li>Stabilize output to avoid repeated character spam.</li>
+<li>Provide configurable runtime behavior through JSON
+configuration.</li>
+<li>Integrate non-blocking TTS for speech generation.</li>
+<li>Validate recognizer logic with deterministic test cases.</li>
+</ul>
+<hr />
+<h2 id="chapter-4-list-of-classes-and-class-diagram">Chapter 4: List of
+Classes and Class Diagram</h2>
+<h3 id="classes-used">Classes Used</h3>
+<ul>
+<li><code>AppConfig</code> (with <code>DetectorConfig</code>,
+<code>RecognizerConfig</code>, <code>WordBuilderConfig</code>,
+<code>TTSConfig</code>)</li>
+<li><code>HandDetector</code></li>
+<li><code>FeatureExtractor</code></li>
+<li><code>GestureRecognizer</code></li>
+<li><code>WordBuilder</code></li>
+<li><code>TTSEngine</code></li>
+<li><code>main</code> (orchestration)</li>
+</ul>
+<h3 id="class-diagram-textual">Class Diagram (Textual)</h3>
+<pre class="text"><code>main.cpp
+  |-- uses --&gt; AppConfig (loadConfig)
+  |-- owns --&gt; HandDetector
+  |-- owns --&gt; GestureRecognizer
+  |-- owns --&gt; WordBuilder
+  |-- owns --&gt; TTSEngine
+
+GestureRecognizer
+  |-- has --&gt; FeatureExtractor
+  |-- uses --&gt; RecognizerConfig
+
+HandDetector
+  |-- uses --&gt; DetectorConfig
+
+TTSEngine
+  |-- uses --&gt; TTSConfig values (via configure)</code></pre>
+<h3 id="figure-1-high-level-architecture">Figure 1: High-Level
+Architecture</h3>
+<pre class="text"><code>Webcam Frame
+   -&gt; HandDetector (HSV + ROI + face mask + motion + contour filtering)
+   -&gt; GestureRecognizer (FeatureExtractor + rule mapping)
+   -&gt; WordBuilder (stability + re-trigger control)
+   -&gt; Sentence Buffer
+   -&gt; TTSEngine (async speak)</code></pre>
+<hr />
+<h2 id="chapter-5-description-of-oop-concepts-used">Chapter 5:
+Description of OOP Concepts Used</h2>
+<h3 id="encapsulation">1. Encapsulation</h3>
+<p>Each module manages its own state and operations: -
+<code>HandDetector</code> encapsulates calibration and detection masks.
+- <code>GestureRecognizer</code> encapsulates feature-to-label rules and
+confidence. - <code>WordBuilder</code> encapsulates sentence state and
+stability counters. - <code>TTSEngine</code> encapsulates worker thread,
+speech queue, and backend execution.</p>
+<h3 id="abstraction">2. Abstraction</h3>
+<p>Complex internals are hidden behind clear interfaces: -
+<code>detect()</code>, <code>recognize()</code>, <code>process()</code>,
+and <code>speakAsync()</code> expose simple operations. - Caller code in
+<code>main.cpp</code> remains readable and high-level.</p>
+<h3 id="composition">3. Composition</h3>
+<p>The system is built by combining objects: - <code>main.cpp</code>
+composes detector, recognizer, builder, and TTS engine. -
+<code>GestureRecognizer</code> composes <code>FeatureExtractor</code>
+for reusable feature logic.</p>
+<h3 id="modularity-and-reusability">4. Modularity and Reusability</h3>
+<p>Configuration loading (<code>loadConfig</code>) is isolated from
+processing classes.<br />
+<code>FeatureExtractor</code> and recognizer tests
+(<code>RecognizerRuleTests.cpp</code>) allow independent validation.</p>
+<h3 id="constructor-overloading-and-method-interfaces">5. Constructor
+Overloading and Method Interfaces</h3>
+<p><code>HandDetector</code> and <code>GestureRecognizer</code> provide
+default and config-based constructors, enabling both quick start and
+tuned deployment.</p>
+<hr />
+<h2 id="chapter-6-implementation-details-and-code">Chapter 6:
+Implementation Details and Code</h2>
+<h3 id="workflow">6.1 Workflow</h3>
+<ol type="1">
+<li>Load runtime parameters from <code>config.json</code>.<br />
+</li>
+<li>Start webcam stream.<br />
+</li>
+<li>Perform initial skin calibration in a fixed ROI.<br />
+</li>
+<li>Detect best hand contour using layered filtering.<br />
+</li>
+<li>Extract gesture features and classify sign.<br />
+</li>
+<li>Stabilize sign frames before committing character.<br />
+</li>
+<li>Build sentence and optionally speak asynchronously.<br />
+</li>
+<li>Display overlays (gesture, confidence, progress, sentence, TTS
+state).</li>
+</ol>
+<h3 id="key-modules">6.2 Key Modules</h3>
+<p><strong>A) Configuration (<code>AppConfig.cpp/.h</code>)</strong> -
+Reads detector, calibration, recognizer, word-builder, and TTS
+parameters from JSON. - Applies fallback defaults when keys are
+absent.</p>
+<p><strong>B) Hand Detection (<code>HandDetector.cpp/.h</code>)</strong>
+- Gaussian blur + HSV conversion. - Skin thresholding with wrap-around
+hue support. - Background subtraction for motion consistency. - Face
+region suppression using Haar cascade. - Optional ROI bounds. -
+Morphological cleanup and contour scoring to keep best candidate.</p>
+<p><strong>C) Feature Extraction
+(<code>FeatureExtractor.cpp/.h</code>)</strong> - Computes contour area,
+bounding-box aspect ratio, extent, solidity. - Finds convex hull and
+convexity defects. - Estimates fingertip candidates and finger
+count.</p>
+<p><strong>D) Gesture Recognition
+(<code>GestureRecognizer.cpp/.h</code>)</strong> - Uses extracted
+features and rule conditions to classify: - 1-finger/closed:
+<code>A</code>, <code>I</code>, <code>O</code>, <code>C</code> -
+2-finger: <code>N</code>, <code>S</code>, <code>L</code>, <code>H</code>
+- 3-finger: <code>T</code> - 4+ fingers: <code>E</code>,
+<code>Space</code> - Applies minimum confidence and conservative margin
+checks.</p>
+<p><strong>E) Sentence Builder (<code>WordBuilder.h</code>)</strong> -
+Commits only after stable frame threshold. - Supports delayed re-trigger
+to avoid repeated commits. - Handles <code>Space</code>,
+<code>Backspace</code>, <code>Clear</code>, and <code>Speak</code>
+actions.</p>
+<p><strong>F) Text to Speech (<code>TTSEngine.cpp/.h</code>)</strong> -
+Non-blocking queue-based speaking thread. - Primary backend
+<code>spd-say</code>, fallback <code>espeak-ng</code>. - Tracks
+speaking, availability, and error status.</p>
+<h3 id="build-and-run">6.3 Build and Run</h3>
+<ul>
+<li>Build command: <code>./compile.sh</code></li>
+<li>Run command: <code>./sign_lang</code></li>
+<li>Rule-test command: <code>./test_rules.sh</code></li>
+</ul>
+<hr />
+<h2 id="chapter-7-test-cases-and-results">Chapter 7: Test Cases and
+Results</h2>
+<h3
+id="table-1-gesture-rule-test-cases-from-recognizerruletests.cpp">Table
+1: Gesture Rule Test Cases (from
+<code>RecognizerRuleTests.cpp</code>)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Sr No</th>
+<th>Test Name</th>
+<th>Expected</th>
+<th>Result (Current Logic)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>A_fist</td>
+<td>A</td>
+<td>Pass</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>I_IndexUp</td>
+<td>I</td>
+<td>Pass</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>C_curve</td>
+<td>C</td>
+<td>Pass</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>N_sign</td>
+<td>N</td>
+<td>Pass</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>H_sign</td>
+<td>H</td>
+<td>Pass</td>
+</tr>
+<tr>
+<td style="text-align: right;">6</td>
+<td>T_sign</td>
+<td>T</td>
+<td>Pass</td>
+</tr>
+<tr>
+<td style="text-align: right;">7</td>
+<td>E_openPalm</td>
+<td>E</td>
+<td>Pass</td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td>Space_palm_flat</td>
+<td>Space</td>
+<td>Pass</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Observed:</strong> 8/8 rule tests pass in deterministic
+unit-style execution.</p>
+<h3 id="runtime-validation-notes">Runtime Validation Notes</h3>
+<ul>
+<li>Core gestures are recognized effectively in controlled
+lighting.</li>
+<li>Calibration and threshold tuning in <code>config.json</code>
+significantly improve stability.</li>
+<li>Stabilization mechanism reduces accidental repeated characters.</li>
+</ul>
+<hr />
+<h2 id="chapter-8-individual-contributions">Chapter 8: Individual
+Contributions</h2>
+<blockquote>
+<p>Replace placeholder names with actual member details.</p>
+</blockquote>
+<ul>
+<li><strong>Student Name 1 (PRN: ______):</strong> Hand detection
+pipeline, calibration workflow, contour filtering.</li>
+<li><strong>Student Name 2 (PRN: ______):</strong> Feature extraction
+and gesture rule-classifier implementation.</li>
+<li><strong>Student Name 3 (PRN: ______):</strong> Word-building
+stability logic, TTS integration, testing and documentation.</li>
+</ul>
+<hr />
+<h2 id="chapter-9-conclusion-and-future-scope">Chapter 9: Conclusion and
+Future Scope</h2>
+<p>The project successfully demonstrates an object-oriented, real-time
+hand-sign-to-sentence system using C++ and OpenCV. It integrates
+computer vision, configurable recognition rules, stable text generation,
+and speech synthesis into a usable pipeline. The architecture is
+modular, readable, and testable, making it suitable for academic
+demonstration and further development.</p>
+<h3 id="future-scope">Future Scope</h3>
+<ul>
+<li>Add dataset-driven or hybrid ML classification for higher gesture
+vocabulary.</li>
+<li>Introduce adaptive illumination handling and multi-hand
+scenarios.</li>
+<li>Support full sign language words/phrases beyond alphabet-like
+mappings.</li>
+<li>Add GUI settings panel for live threshold tuning.</li>
+<li>Port to cross-platform desktop/mobile targets.</li>
+</ul>
+<hr />
+<h2 id="references">References</h2>
+<ol type="1">
+<li>OpenCV Documentation: https://docs.opencv.org/<br />
+</li>
+<li>C++ Reference: https://en.cppreference.com/<br />
+</li>
+<li>Linux TTS tools: <code>speech-dispatcher</code>,
+<code>espeak-ng</code></li>
+</ol>
+</body>
+</html>

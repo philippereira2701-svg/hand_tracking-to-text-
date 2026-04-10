@@ -20,15 +20,5 @@ if [ ! -x "$CPP_COMPILER" ]; then
   CPP_COMPILER="g++"
 fi
 
-OPENCV_FLAGS="$(pkg-config --cflags --libs opencv4)"
-APP_SOURCES=(
-  main.cpp
-  HandDetector.cpp
-  GestureRecognizer.cpp
-  FeatureExtractor.cpp
-  AppConfig.cpp
-  TTSEngine.cpp
-)
-
-"$CPP_COMPILER" -B/usr/bin "${APP_SOURCES[@]}" -std=c++17 -pthread -o sign_lang $OPENCV_FLAGS
-echo "Compilation successful. Run with ./sign_lang"
+$CPP_COMPILER -B/usr/bin RecognizerRuleTests.cpp GestureRecognizer.cpp FeatureExtractor.cpp -std=c++17 -o rule_tests `pkg-config --cflags opencv4` -lopencv_core -lopencv_imgproc
+./rule_tests
